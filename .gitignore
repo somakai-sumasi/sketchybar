@@ -65,3 +65,9 @@ yarn.lock
 # Custom plugin data/cache
 plugins/*/cache/
 plugins/*/data/
+
+# SketchyBar specific
+cache/
+tmp/
+.claude/
+.claude

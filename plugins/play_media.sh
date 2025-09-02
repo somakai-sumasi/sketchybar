@@ -91,24 +91,104 @@ process_album_art() {
 # ============================
 # 表示テキスト生成関数
 # ============================
+# 文字列の表示幅を計算（全角は2、半角は1としてカウント）
+get_display_width() {
+    local str=$1
+    local width=0
+    local i
+    
+    for (( i=0; i<${#str}; i++ )); do
+        local char="${str:$i:1}"
+        # UTF-8の全角文字判定（簡易版）
+        # 文字のバイト数を取得
+        local bytes=$(echo -n "$char" | wc -c)
+        if [ $bytes -eq 3 ]; then
+            # 3バイト文字（多くの日本語文字）は全角として扱う
+            width=$((width + 2))
+        else
+            width=$((width + 1))
+        fi
+    done
+    
+    echo $width
+}
+
+# 指定された表示幅で文字列を切り出す
+substr_by_display_width() {
+    local str=$1
+    local start_width=$2
+    local max_width=$3
+    local result=""
+    local current_width=0
+    local skip_width=0
+    local i
+    
+    for (( i=0; i<${#str}; i++ )); do
+        local char="${str:$i:1}"
+        local bytes=$(echo -n "$char" | wc -c)
+        local char_width=1
+        
+        if [ $bytes -eq 3 ]; then
+            char_width=2
+        fi
+        
+        # スタート位置まで読み飛ばし
+        if [ $skip_width -lt $start_width ]; then
+            skip_width=$((skip_width + char_width))
+            continue
+        fi
+        
+        # 最大幅に達したら終了
+        if [ $current_width -ge $max_width ]; then
+            break
+        fi
+        
+        # 文字を追加（ただし最大幅を超えない範囲で）
+        if [ $((current_width + char_width)) -le $max_width ]; then
+            result="${result}${char}"
+            current_width=$((current_width + char_width))
+        else
+            # 全角文字が入りきらない場合はスペースで埋める
+            result="${result} "
+            break
+        fi
+    done
+    
+    # 幅が足りない場合はスペースで埋める
+    while [ $current_width -lt $max_width ]; do
+        result="${result} "
+        current_width=$((current_width + 1))
+    done
+    
+    echo "$result"
+}
+
 generate_display_text() {
     local title=$1
     local artists=$2
     
     local text=" ${title}  󰙃 ${artists}  "
-    local text_length=${#text}
+    # ループ用にテキストを連結（継ぎ目なくスクロールするため）
+    local loop_text="${text}${text}"
+    local text_display_width=$(get_display_width "$text")
     
-    # スクロール位置計算
-    local start=$(( $(date +%s) % (text_length * SCROLL_TIME) ))
+    # 表示幅の目標値（全角文字を考慮）
+    local target_display_width=30
     
-    # 表示テキストの切り出し
-    DISPLAY_TEXT=${text:$start:$DISPLAY_TEXT_LENGTH}
-    local display_length=${#DISPLAY_TEXT}
-    
-    # 短い場合は先頭から追加
-    if [ $display_length -lt $DISPLAY_TEXT_LENGTH ]; then
-        DISPLAY_TEXT="$DISPLAY_TEXT${text:0:$(( DISPLAY_TEXT_LENGTH - display_length ))}"
+    # スクロール位置計算（2表示幅単位で移動 = 全角1文字分）
+    # 1秒ごとに2表示幅（全角1文字分）移動
+    local scroll_step=2
+    local total_steps=$((text_display_width / scroll_step))
+    if [ $((text_display_width % scroll_step)) -ne 0 ]; then
+        total_steps=$((total_steps + 1))
     fi
+    
+    # 現在のステップ位置を計算
+    local current_step=$(( ($(date +%s) / SCROLL_TIME) % total_steps ))
+    local start=$((current_step * scroll_step))
+    
+    # ループテキストから表示テキストを切り出し（常に連結版から取得）
+    DISPLAY_TEXT=$(substr_by_display_width "$loop_text" $start $target_display_width)
 }
 
 # ============================

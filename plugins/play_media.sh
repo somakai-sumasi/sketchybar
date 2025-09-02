@@ -167,7 +167,7 @@ generate_display_text() {
     local title=$1
     local artists=$2
     
-    local text=" ${title}  󰙃 ${artists}  "
+    local text=" ${title}  󰙃 ${artists}  "
     # ループ用にテキストを連結（継ぎ目なくスクロールするため）
     local loop_text="${text}${text}"
     local text_display_width=$(get_display_width "$text")

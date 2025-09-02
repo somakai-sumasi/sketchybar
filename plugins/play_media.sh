@@ -230,6 +230,43 @@ determine_ui_state() {
 }
 
 # ============================
+# スクロール処理関数（汎用版）
+# ============================
+generate_scrolling_text() {
+    local text=$1
+    local max_display_width=$2
+    
+    local text_display_width=$(get_display_width "$text")
+    
+    # テキストが表示幅に収まる場合はそのまま返す
+    if [ $text_display_width -le $max_display_width ]; then
+        echo "$text"
+        return
+    fi
+    
+    # スクロール処理
+    # スペースを追加してループ感を出す
+    local padded_text="${text}    "
+    local loop_text="${padded_text}${padded_text}"
+    local padded_width=$(get_display_width "$padded_text")
+    
+    # スクロール位置計算（1秒ごとに2表示幅移動）
+    local scroll_step=2
+    local total_steps=$((padded_width / scroll_step))
+    if [ $((padded_width % scroll_step)) -ne 0 ]; then
+        total_steps=$((total_steps + 1))
+    fi
+    
+    # 現在のステップ位置を計算
+    local current_step=$(( ($(date +%s) / SCROLL_TIME) % total_steps ))
+    local start=$((current_step * scroll_step))
+    
+    # ループテキストから表示テキストを切り出し
+    local result=$(substr_by_display_width "$loop_text" $start $max_display_width)
+    echo "$result"
+}
+
+# ============================
 # ポップアップ更新関数
 # ============================
 update_popup() {
@@ -251,11 +288,19 @@ update_popup() {
                                               background.image.scale=$image_scale
     fi
     
+    # タイトルとアーティスト名にスクロール処理を適用
+    # max_charsの値は全角を2、半角を1として計算（max_chars=20は表示幅40相当）
+    local title_max_width=40  # TITLE_MAX_CHARS(20) * 2
+    local artist_max_width=50 # ARTIST_MAX_CHARS(25) * 2
+    
+    local display_title=$(generate_scrolling_text "$title" $title_max_width)
+    local display_artists=$(generate_scrolling_text "$artists" $artist_max_width)
+    
     # プログレスバーをpercentageで更新
     progress_percent="${progress_percent:-0}"
     
-    sketchybar --set playa_media.title label="$title" \
-               --set playa_media.artist label="$artists" \
+    sketchybar --set playa_media.title label="$display_title" \
+               --set playa_media.artist label="$display_artists" \
                --set playa_media.time label="${current_time:-0:00}" \
                --set playa_media.duration label="${total_time:-0:00}" \
                --set playa_media.progress slider.percentage="${progress_percent}"

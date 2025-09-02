@@ -13,8 +13,8 @@ readonly DISPLAY_TEXT_LENGTH=20
 readonly SCROLL_TIME=1
 
 # アイコン定義
-readonly ICON_PLAYING=""
-readonly ICON_PAUSED=""
+readonly ICON_PLAYING="󰝚 "
+readonly ICON_PAUSED="󰝛 "
 
 # ============================
 # 初期設定

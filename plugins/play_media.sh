@@ -245,9 +245,7 @@ generate_scrolling_text() {
     fi
     
     # スクロール処理
-    # スペースを追加してループ感を出す
-    local padded_text="${text}    "
-    local loop_text="${padded_text}${padded_text}"
+    local loop_text="${text}${text}"
     local padded_width=$(get_display_width "$padded_text")
     
     # スクロール位置計算（1秒ごとに2表示幅移動）

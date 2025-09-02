@@ -2,7 +2,7 @@
 #
 source "$CONFIG_DIR/colors.sh" # Loads all defined colors
 source "$CONFIG_DIR/icons.sh"  # Loads all defined icons
-FONT="SF Pro"
+FONT="Moralerspace Neon HW"
 network_down=(
 	# padding_left=20
 	# highlight.padding_left=20

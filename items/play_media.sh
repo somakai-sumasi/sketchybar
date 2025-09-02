@@ -25,13 +25,13 @@ PROGRESS_BAR_HEIGHT=3
 PROGRESS_BAR_WIDTH=100
 
 # Fonts
-TITLE_FONT="SF Pro Display:Bold:11.0"
-ARTIST_FONT="SF Pro Display:Regular:10.0"
-TIME_FONT="SF Pro Display:Regular:8.0"
+TITLE_FONT="Moralerspace Neon HW:Bold:11.0"
+ARTIST_FONT="Moralerspace Neon HW:Regular:9.0"
+TIME_FONT="Moralerspace Neon HW:Regular:8.0"
 
 # Text limits
 TITLE_MAX_CHARS=20
-ARTIST_MAX_CHARS=20
+ARTIST_MAX_CHARS=25
 
 # ────────────────────────────────────
 # ▸ Item Definitions

@@ -21,8 +21,8 @@ sketchybar --bar position=top height=40 blur_radius=30 color=0xaa000000
 default=(
   padding_left=5
   padding_right=5
-  icon.font="Hack Nerd Font:Bold:17.0"
-  label.font="Hack Nerd Font:Bold:14.0"
+  icon.font="Moralerspace Neon HW:Bold:17.0"
+  label.font="Moralerspace Neon HW:Bold:14.0"
   icon.color=0xffffffff
   label.color=0xffffffff
   icon.padding_left=4
@@ -85,6 +85,7 @@ source "$CONFIG_DIR/icons.sh"  # Loads all defined icons
 
 source "$ITEM_DIR/clock.sh"
 
+
 sketchybar --add item volume right \
            --set volume script="$PLUGIN_DIR/volume.sh" \
            --subscribe volume volume_change \
@@ -92,12 +93,10 @@ sketchybar --add item volume right \
            --set battery update_freq=120 script="$PLUGIN_DIR/battery.sh" \
            --subscribe battery system_woke power_source_change
 
-# source "$ITEM_DIR/asana.sh"
-source "$ITEM_DIR/slack.sh"
+source "$ITEM_DIR/wifi.sh"
+
 source "$ITEM_DIR/slack.sh"
 source "$ITEM_DIR/play_media.sh"
-# source "$ITEM_DIR/spotify.sh"
-# source "$ITEM_DIR/network.sh"
 
 ##### Force all scripts to run the first time (never do this in a script) #####
 sketchybar --update

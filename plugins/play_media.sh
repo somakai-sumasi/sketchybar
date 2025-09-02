@@ -198,6 +198,7 @@ update_main_bar() {
         label="${display_text}" \
         icon.drawing="${is_title_display}" \
         label.drawing="${is_icon_display}" \
+        label.font="Moralerspace Neon HW:Regular:14.0" \
         label.width=210 \
         label.align=left \
         background.drawing=on \

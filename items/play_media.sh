@@ -40,6 +40,7 @@ ARTIST_MAX_CHARS=20
 playa_media=(
   update_freq=1
   script="ARTWORK_IMAGE_SCALE=$ARTWORK_IMAGE_SCALE $PLUGIN_DIR/play_media.sh"
+  click_script="sketchybar --set playa_media popup.drawing=toggle"
   popup.align=center
   popup.horizontal=on
   popup.background.color=$POPUP_BG_COLOR
@@ -125,7 +126,7 @@ playa_media_duration=(
 sketchybar --add item playa_media right                              \
            --set playa_media "${playa_media[@]}"                     \
            --subscribe playa_media system_woke media_change          \
-                                  mouse.entered mouse.exited         \
+                                  mouse.clicked mouse.exited.global  \
                                                                      \
            --add item playa_media.artwork popup.playa_media         \
            --set playa_media.artwork "${playa_media_artwork[@]}"    \

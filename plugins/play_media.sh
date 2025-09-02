@@ -212,13 +212,12 @@ update_main_bar() {
 handle_mouse_event() {
     local sender=$1
     
-    if [ "$sender" = "mouse.entered" ]; then
-        # ホバー時にポップアップを表示
-        sketchybar --set playa_media popup.drawing=on
+    if [ "$sender" = "mouse.clicked" ]; then
+        # クリック時にポップアップの表示をトグル
         update_popup "$IMAGE_FILE" "$TITLE" "$ARTISTS" "$CURRENT_TIME" "$TOTAL_TIME" "$PROGRESS_PERCENT"
         
-    elif [ "$sender" = "mouse.exited" ]; then
-        # マウスが離れたらポップアップを非表示
+    elif [ "$sender" = "mouse.exited.global" ]; then
+        # グローバルでマウスが離れたらポップアップを非表示
         sketchybar --set playa_media popup.drawing=off
     fi
 }
@@ -248,8 +247,10 @@ main() {
     # プログレスバー幅計算
     calculate_progress_width "$PROGRESS_PERCENT"
     
-    # マウスイベント処理
-    handle_mouse_event "$SENDER"
+    # マウスイベント処理（クリックイベントのみ処理）
+    if [ "$SENDER" = "mouse.clicked" ] || [ "$SENDER" = "mouse.exited.global" ]; then
+        handle_mouse_event "$SENDER"
+    fi
     
     # メインバー更新
     update_main_bar "$NAME" "$ICON" "$DISPLAY_TEXT" "$IS_TITLE_DISPLAY" "$IS_ICON_DISPLAY" "$IMAGE_FILE"

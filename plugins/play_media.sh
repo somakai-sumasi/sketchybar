@@ -244,14 +244,15 @@ generate_scrolling_text() {
         return
     fi
     
-    # スクロール処理
-    local loop_text="${text}${text}"
-    local padded_width=$(get_display_width "$padded_text")
+    # スクロール処理（スペースを追加してスムーズなループを実現）
+    local padded_text="${text}    "  # 4スペース追加でテキスト間に余白
+    local loop_text="${padded_text}${text}    "
+    local loop_width=$(get_display_width "$padded_text")
     
     # スクロール位置計算（1秒ごとに2表示幅移動）
     local scroll_step=2
-    local total_steps=$((padded_width / scroll_step))
-    if [ $((padded_width % scroll_step)) -ne 0 ]; then
+    local total_steps=$((loop_width / scroll_step))
+    if [ $((loop_width % scroll_step)) -ne 0 ]; then
         total_steps=$((total_steps + 1))
     fi
     

@@ -3,7 +3,6 @@
 # WiFi Item with Control Center Alias
 # Uses native macOS WiFi icon from Control Center
 
-# Add WiFi alias from Control Center
 sketchybar --add alias "コントロールセンター,WiFi" right \
            --rename "コントロールセンター,WiFi" wifi_alias \
            --set wifi_alias \
@@ -13,4 +12,4 @@ sketchybar --add alias "コントロールセンター,WiFi" right \
                  icon.drawing=off \
                  padding_left=0 \
                  padding_right=0 \
-                 
+                 click_script="open 'x-apple.systempreferences:com.apple.wifi-settings-extension'"

@@ -7,7 +7,7 @@
 # ============================
 readonly STATE_FILE="/tmp/sketchybar_media_state.json"
 readonly SCROLL_TIME=1
-readonly ARTWORK_IMAGE_SCALE=0.56
+readonly ARTWORK_IMAGE_SCALE=0.5
 
 # アイコン定義
 readonly ICON_PLAYING="󰝚 "
@@ -200,7 +200,7 @@ update_popup() {
     fi
 
     local title_max_width=30
-    local artist_max_width=40
+    local artist_max_width=39
     local display_title display_artists
     display_title=$(generate_scrolling_text "$TITLE" $title_max_width)
     display_artists=$(generate_scrolling_text "$ARTISTS" $artist_max_width)

@@ -11,6 +11,8 @@ readonly MEDIA_CONTROL="/opt/homebrew/bin/media-control"
 readonly SKETCHYBAR="/opt/homebrew/bin/sketchybar"
 readonly JQ="/opt/homebrew/bin/jq"
 readonly MD5="/sbin/md5"
+readonly SIPS="/usr/bin/sips"
+readonly ARTWORK_RESIZE_MAX=140
 
 mkdir -p "$CACHE_DIR"
 echo '{}' > "$STATE_FILE"
@@ -51,6 +53,7 @@ cleanup_cache
     artwork_path="$CACHE_DIR/${cache_hash}.jpg"
     if [ ! -f "$artwork_path" ]; then
       printf '%s' "$artwork_data" | base64 -d > "$artwork_path" 2>/dev/null
+      "$SIPS" -Z "$ARTWORK_RESIZE_MAX" "$artwork_path" >/dev/null 2>&1
     fi
     new_state=$(printf '%s' "$new_state" | "$JQ" -c --arg p "$artwork_path" 'del(.artworkData) | .artworkPath = $p')
   fi

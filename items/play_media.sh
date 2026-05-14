@@ -20,7 +20,6 @@ POPUP_BORDER_WIDTH=1
 ARTWORK_SIZE=70
 ARTWORK_CORNER_RADIUS=6
 ARTWORK_SCALE=0.01
-ARTWORK_IMAGE_SCALE=0.14
 PROGRESS_BAR_HEIGHT=3
 PROGRESS_BAR_WIDTH=100
 
@@ -39,7 +38,7 @@ ARTIST_MAX_CHARS=25
 
 playa_media=(
   update_freq=1
-  script="ARTWORK_IMAGE_SCALE=$ARTWORK_IMAGE_SCALE $PLUGIN_DIR/play_media.sh"
+  script="$PLUGIN_DIR/play_media.sh"
   click_script="sketchybar --set playa_media popup.drawing=toggle"
   popup.align=center
   popup.horizontal=on
@@ -58,15 +57,15 @@ playa_media_artwork=(
   background.image.corner_radius=$ARTWORK_CORNER_RADIUS
   width=$ARTWORK_SIZE
   background.height=$ARTWORK_SIZE
-  padding_left=8
-  padding_right=8
+  padding_left=6
+  padding_right=2
 )
 
 playa_media_title=(
   icon.drawing=off
   label.font="$TITLE_FONT"
   label.color=$TITLE_COLOR
-  label.max_chars=$TITLE_MAX_CHARS
+  label.align=left
   width=0
   padding_left=0
   padding_right=0
@@ -77,7 +76,7 @@ playa_media_artist=(
   icon.drawing=off
   label.font="$ARTIST_FONT"
   label.color=$ARTIST_COLOR
-  label.max_chars=$ARTIST_MAX_CHARS
+  label.align=left
   width=0
   padding_left=0
   padding_right=0
@@ -91,7 +90,7 @@ playa_media_time=(
   label="0:00"
   width=35
   padding_left=0
-  padding_right=5
+  padding_right=1
   y_offset=-10
 )
 
@@ -114,7 +113,7 @@ playa_media_duration=(
   label.align=right
   label="0:00"
   width=35
-  padding_left=5
+  padding_left=1
   padding_right=0
   y_offset=-10
 )
